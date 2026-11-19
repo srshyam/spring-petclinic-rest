@@ -73,7 +73,6 @@ jobs:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repository: aws-eks-gitops
 
     - name: Checkout GitOps repo
       uses: actions/checkout@v6
@@ -81,6 +80,7 @@ jobs:
         repository: srshyam/aws-eks-gitops
         token: ${{ steps.github-app-token.outputs.token }}
         ref: petclinic-eks-helm-autoscaling
+        path: gitops-repo
         
     - name: Update Helm Image Tag in GitOps Repo
       run: |
@@ -97,8 +97,8 @@ jobs:
         # 3. Commit, Rebase, and Push
         if ! git diff-index --quiet HEAD --; then
           git commit -m "Auto-update rest image tag to ${{ github.sha }} [skip ci]"
-          git pull --rebase origin main
-          git push origin HEAD
+          git pull --rebase origin petclinic-eks-helm-autoscaling
+          git push origin HEAD:petclinic-eks-helm-autoscaling
         else
           echo "No change in image tag."
         fi
