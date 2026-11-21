@@ -1,4 +1,4 @@
-name: Petclinic CI-CD Angular Backend
+name: Petclinic CI-CD Rest Backend
 
 on: 
   push:
